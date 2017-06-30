@@ -1,4 +1,5 @@
 FROM nginx:alpine
 
 # Copy nginx vhost directives
-COPY nginx/conf.d /etc/nginx/conf.d
+COPY entrypoint.sh /entrypoint.sh
+CMD ["/entrypoint.sh"]
