@@ -1,18 +1,17 @@
 #!/bin/sh
 set -ex
 
+if [ "$PRESERVE_PATH" != "True" ]; then
+  target="${REDIRECT_URL}"
+else
+  target="${REDIRECT_URL}\$request_uri"
+fi
+
 cat > /etc/nginx/conf.d/default.conf <<EOF
 server {
     listen 80;
     server_name _;
-    if ($PRESERVE_PATH != "True")
-      {
-        return 301 "$REDIRECT_URL";
-      }
-    if ($PRESERVE_PATH == "True")
-      {
-        return 301 "$REDIRECT_URL$request_uri";
-      }
+    return 301 "$target";
 }
 EOF
 exec nginx -g 'daemon off;'
